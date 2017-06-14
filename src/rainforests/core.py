@@ -15,7 +15,7 @@ PLANET_KAGGLE_ROOT = os.path.abspath("./input/")
 PLANET_KAGGLE_JPEG_DIR = os.path.join(PLANET_KAGGLE_ROOT, 'train-jpg')
 PLANET_KAGGLE_LABEL_CSV = os.path.join(PLANET_KAGGLE_ROOT, 'train_v2.csv')
 
-labels_df = pd.read_csv(PLANET_KAGGLE_LABEL_CSV)
+examples = pd.read_csv(PLANET_KAGGLE_LABEL_CSV)
 
 def labels_set(examples):
   labels = set()
