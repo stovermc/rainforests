@@ -35,6 +35,15 @@ def add_label_columns(df):
 def load_image(image_name):
   return io.imread('./input/train-jpg/' + image_name + '.jpg')
 
+def image_to_feature_vector(image):
+    return image.flatten()
+
+def feature_vector(image_name):
+    return image_to_feature_vector(load_image(image_name))
+
+def add_feature_vectors(df):
+    df["feature_vector"] = df['image_name'].apply(lambda image_name: feature_vector(image_name))
+
 # IPython.embed()
 # add new column to dataframe for weather class - single value 0,1,2,3
 # weather_labels = ['clear', 'partly_cloudy', 'haze', 'cloudy']
