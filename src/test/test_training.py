@@ -37,8 +37,15 @@ def test_image_to_feature_vector():
     pixel_vector = rf.image_to_feature_vector(image)
     assert(len(pixel_vector)== 256 * 256 * 3)
 
-def test_feature_vector_to_classes():
+def test_adding_feature_vectors_to_dataframe():
     # examples = rf.examples
     examples = pd.read_csv('./input/test.csv')
     rf.add_feature_vectors(examples)
     assert('feature_vector' in examples)
+    assert(len(examples['feature_vector'][0]) == 256 * 256 * 3)
+
+def test_adding_classes_to_dataframe():
+    examples = pd.read_csv('./input/test.csv')
+    rf.add_weather_labels(examples)
+    assert('weather_class' in examples)
+    assert(examples['weather_class'][0] == 2)

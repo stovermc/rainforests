@@ -20,10 +20,12 @@ from sklearn.neural_network import MLPClassifier
 clf = MLPClassifier(solver='lbfgs', alpha=1e-5,
                     hidden_layer_sizes=(5, 2), random_state=1)
 
+import IPython
+IPython.embed()
 clf.fit(digits.data[:-1], digits.target[:-1])
 
 clf.predict(digits.data[-1:])
-digits.target([-1:])
+digits.target[-1:]
 
 clf.predict(digits.data[0:1])
 digits.target[0:1]

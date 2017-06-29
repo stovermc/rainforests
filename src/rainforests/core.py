@@ -10,6 +10,10 @@ import os
 import pandas as pd
 import IPython
 from skimage import io
+from sklearn import datasets
+from sklearn import svm
+from sklearn.neural_network import MLPClassifier
+
 
 PLANET_KAGGLE_ROOT = os.path.abspath("./input/")
 PLANET_KAGGLE_JPEG_DIR = os.path.join(PLANET_KAGGLE_ROOT, 'train-jpg')
@@ -42,10 +46,63 @@ def feature_vector(image_name):
     return image_to_feature_vector(load_image(image_name))
 
 def add_feature_vectors(df):
-    df["feature_vector"] = df['image_name'].apply(lambda image_name: feature_vector(image_name))
+    df["feature_vector"] = df['image_name'].apply(feature_vector)
+
+def weather_class(tags):
+    classes  = ['clear', 'cloudy', 'haze', 'partly_cloudy']
+    for (label,tag) in enumerate(classes):
+        if tag in tags:
+            return label
+
+def add_weather_labels(df):
+    df["weather_class"] = df['tags'].apply(weather_class)
+
+from sklearn import datasets
+from sklearn import svm
+
+def run_thing():
+    examples = pd.read_csv('./input/test.csv')
+    add_feature_vectors(examples)
+    add_weather_labels(examples)
+    clf = MLPClassifier(solver='lbfgs', alpha=1e-5,
+                        hidden_layer_sizes=(5, 2), random_state=1)
+    #TODO: make this stuff work (probably have to convert to numpy ndarray or something)
+    clf.fit(examples['feature_vector'], examples['weather_class'])
+    IPython.embed()
+
+if __name__ == "__main__":
+    run_thing()
+
+# 0
+# .x x  A
+# .x x  B
+# .x x  C
+# .x x  D
+# .x x
+# .
+# 256*256*3
+# OpenBLAS
+
+
+# Run training
+
+# Read csv
+# Add feature_vector column
+# Add weather_labels column
+# Do sklearn stuff...
+
+
+# image_name   feature_vector   weather _class   tags
+# 001          [......]          0               agriculture clear habitation primary road
+# 002          [......]          2               haze primary
+# 003          [......]          0               haze primary
 
 # IPython.embed()
 # add new column to dataframe for weather class - single value 0,1,2,3
-# weather_labels = ['clear', 'partly_cloudy', 'haze', 'cloudy']
+# produce 1 number for each row representing that row's class
+# weather_labels = ['clear', 'cloudy', 'haze', 'partly_cloudy']
 # need new function image_to_feature_vector
 # given a sk image give me the flat array of values
+
+
+# clf.fit(df[]"feaure_vector"], df["classes"])
