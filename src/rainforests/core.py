@@ -9,11 +9,12 @@
 import os
 import pandas as pd
 import IPython
+import numpy as np
 from skimage import io
 from sklearn import datasets
 from sklearn import svm
 from sklearn.neural_network import MLPClassifier
-
+from sklearn import svm
 
 PLANET_KAGGLE_ROOT = os.path.abspath("./input/")
 PLANET_KAGGLE_JPEG_DIR = os.path.join(PLANET_KAGGLE_ROOT, 'train-jpg')
@@ -61,14 +62,21 @@ from sklearn import datasets
 from sklearn import svm
 
 def run_thing():
-    examples = pd.read_csv('./input/test.csv')
+    examples = pd.read_csv('./input/train_medium.csv')
     add_feature_vectors(examples)
     add_weather_labels(examples)
     clf = MLPClassifier(solver='lbfgs', alpha=1e-5,
                         hidden_layer_sizes=(5, 2), random_state=1)
+
     #TODO: make this stuff work (probably have to convert to numpy ndarray or something)
-    clf.fit(examples['feature_vector'], examples['weather_class'])
-    IPython.embed()
+    # label_matrix = examples['weather_class'].values.reshape(len(examples['weather_class']), 1)
+    feature_matrix = np.matrix(examples['feature_vector'].tolist())
+    clf.fit(feature_matrix, examples['weather_class'])
+    print(clf.predict(feature_matrix[0:30]))
+
+    clf2 = svm.SVC(gamma=0.001, C=100.)
+    clf2.fit(feature_matrix, examples['weather_class'])
+    print(clf2.predict(feature_matrix[0:30]))
 
 if __name__ == "__main__":
     run_thing()
